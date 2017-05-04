@@ -3,8 +3,6 @@ from sklearn.metrics import confusion_matrix
 import sys
 import numpy as np
 import csv
-import cPickle
-import os
 
 PATH = 'dnd/difficulty.csv'
 IRIS = None
@@ -69,27 +67,13 @@ def test(case):
     return IRIS.target_names[prediction][0]
 
 def get_iris_and_classifer():
-    file, extension = os.path.splitext(PATH)
-    existing = extension == '.pkl'
+    iris = load_iris()
+    classifier = tree.DecisionTreeClassifier()
+    classifier = classifier.fit(iris.data, iris.target)
 
-    if existing:
-        with open(PATH, 'rb') as file:
-            return cPickle.load(file)
+    result = [iris, classifier]
 
-    else:
-        iris = load_iris()
-        classifier = tree.DecisionTreeClassifier()
-        classifier = classifier.fit(iris.data, iris.target)
-
-        with open(PATH + '.dot', 'w') as file:
-            f = tree.export_graphviz(classifier, out_file=file)
-
-        # Save the generated tree
-        result = [iris, classifier]
-        with open(PATH + '.pkl', 'wb') as file:
-            cPickle.dump(result, file)
-
-        return result
+    return result
 
 result = get_iris_and_classifer()
 IRIS = result[0]

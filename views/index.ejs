@@ -17,7 +17,7 @@
     </div>
     <div class="row">
       <div class="col col-md-8 col-md-offset-2 well well-md">
-        <form action="/estimate" method="POST">
+        <form action="/estimate" method="POST" enctype="multipart/form-data">
           <div class="form-group">
             <label>Number of Players</label>
             <input name="playercount" type="number" step="1" class="form-control" required/>
@@ -38,6 +38,12 @@
             <div class="input-group">
               <div class="input-group-addon">Lv.</div>
               <input name="monsterlevel" type="number" class="form-control" required/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Custom Difficulties (Optional)</label>
+            <div class="input-group">
+              <input name="userfile" type="file" class="form-control" />
             </div>
           </div>
           <div class="form-group">

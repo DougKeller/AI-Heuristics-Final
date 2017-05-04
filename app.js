@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const fileUpload = require('express-fileupload');
+app.use(fileUpload());
+
 const exec = require('child_process').exec;
 var rootCommand = 'python dnd/estimate.py ';
 
@@ -21,6 +24,11 @@ app.post('/estimate', (request, response) => {
   var pLevel = parseInt(request.body.playerlevel);
   var mCount = parseInt(request.body.monstercount);
   var mLevel = parseInt(request.body.monsterlevel);
+
+  if (request.files.userfile) {
+    var file = request.files.userfile;
+    file.mv('dnd/user_file.csv');
+  }
 
   var args = [pCount, pLevel, mCount, mLevel].map(v => v.toString()).join(' ');
   var command = rootCommand + args;
