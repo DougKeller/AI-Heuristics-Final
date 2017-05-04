@@ -12,17 +12,22 @@
   <div class="container">
     <div class="row">
       <div class="text-center">
-        <h3>Estimate Difficulty</h3>
+        <h2>Estimate Difficulty</h2>
       </div>
     </div>
     <div class="row">
-      <div class="col col-md-8 col-md-offset-2 well well-md">
-        <label>Player Count:</label> <%= playercount %><br />
-        <label>Player Level:</label> <%= playerlevel %><br />
-        <label>Monster Count:</label> <%= monstercount %><br />
-        <label>Monster Level:</label> <%= monsterlevel %><br />
-
-        <h3>Difficulty: <%= text %></h3>
+      <div class="col col-md-6 col-md-offset-3 well well-md">
+        <div class="row">
+          <div class="col col-md-6">
+            <label>Player Count:</label> <%= playercount %><br />
+            <label>Player Level:</label> <%= playerlevel %><br />
+            <label>Monster Count:</label> <%= monstercount %><br />
+            <label>Monster Level:</label> <%= monsterlevel %><br />
+          </div>
+          <div class="col col-md-6">
+            <h3>Difficulty: <span class="<%= text.toLowerCase() %>"><%= text %></h3>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -32,4 +37,18 @@
     </div>
   </div>
 </body>
+<style>
+  .easy {
+    color: #3FC380
+  }
+  .medium {
+    color: #E9D460
+  }
+  .hard {
+    color: #EB9532
+  }
+  .deadly {
+    color: #D64541
+  }
+</style>
 </html>

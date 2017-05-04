@@ -12,43 +12,59 @@
   <div class="container">
     <div class="row">
       <div class="text-center">
-        <h3>Estimate Difficulty</h3>
+        <h2>Estimate Difficulty</h2>
       </div>
     </div>
     <div class="row">
       <div class="col col-md-8 col-md-offset-2 well well-md">
-        <form action="/estimate" method="POST" enctype="multipart/form-data">
+        <form class="form-horizontal" action="/estimate" method="POST" enctype="multipart/form-data">
           <div class="form-group">
-            <label>Number of Players</label>
-            <input name="playercount" type="number" step="1" class="form-control" required/>
-          </div>
-          <div class="form-group">
-            <label>Average Player Level</label>
-            <div class="input-group">
-              <div class="input-group-addon">Lv.</div>
-              <input name="playerlevel" type="number" class="form-control" required/>
+            <label class="control-label col col-sm-4">Number of Players</label>
+            <div class="col col-sm-8">
+              <input name="playercount" type="number" step="1" class="form-control" required />
             </div>
           </div>
+
           <div class="form-group">
-            <label>Number of Monsters</label>
-            <input name="monstercount" type="number" step="1" class="form-control" required/>
-          </div>
-          <div class="form-group">
-            <label>Average Monster Level</label>
-            <div class="input-group">
-              <div class="input-group-addon">Lv.</div>
-              <input name="monsterlevel" type="number" class="form-control" required/>
+            <label class="control-label col col-sm-4">Average Player Level</label>
+            <div class="col col-sm-8">
+              <div class="input-group">
+                <div class="input-group-addon">Lv.</div>
+                <input name="playerlevel" type="number" class="form-control" required />
+              </div>
             </div>
           </div>
+
           <div class="form-group">
-            <label>Custom Difficulties (Optional)</label>
-            <div class="input-group">
+            <label class="control-label col col-sm-4">Number of Monsters</label>
+            <div class="col col-sm-8">
+              <input name="monstercount" type="number" step="1" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col col-sm-4">Average Monster Level</label>
+            <div class="col col-sm-8">
+              <div class="input-group">
+                <div class="input-group-addon">Lv.</div>
+                <input name="monsterlevel" type="number" class="form-control" required />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col col-sm-4">Custom Difficulties (Optional)</label>
+            <div class="col col-sm-8">
               <input name="userfile" type="file" class="form-control" />
             </div>
           </div>
+
           <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Estimate Difficulty</button>
+            <div class="col col-sm-8 col-sm-offset-2">
+              <button type="submit" class="btn btn-primary btn-block">Estimate Difficulty</button>
+            </div>
           </div>
+
         </form>
       </div>
     </div>
