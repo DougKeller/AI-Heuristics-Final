@@ -45,10 +45,12 @@ def load_data_from_path(path):
             target[i] = np.asarray(ir[-1], dtype=np.int)
 
 
-    return DecisionTreeData(data=data, target=target,
-                 target_names=target_names,
-                 feature_names=['sepal length (cm)', 'sepal width (cm)',
-                                'petal length (cm)', 'petal width (cm)'])
+    return DecisionTreeData(
+        data=data,
+        target=target,
+        target_names=target_names,
+        feature_names=['player count', 'player level', 'monster count', 'mounster level']
+    )
 
 
 def load_iris():
