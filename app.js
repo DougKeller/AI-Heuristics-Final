@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const exec = require('child_process').exec;
-var rootCommand = 'python foo.py ';
+var rootCommand = 'python dnd.py ';
 
 app.set('view engine', 'ejs');
 
@@ -27,7 +27,13 @@ app.post('/estimate', (request, response) => {
 
   console.log(`Executing command: ${command}`);
   exec(command, (error, stdout, stderr) => {
-    response.render('result', { text: stdout });
+    response.render('result', {
+      text: stdout,
+      playercount: pCount,
+      playerlevel: pLevel,
+      monstercount: mCount,
+      monsterlevel: mLevel
+    });
   });
 });
 
