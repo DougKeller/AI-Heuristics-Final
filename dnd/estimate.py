@@ -1,8 +1,10 @@
 from sklearn import tree
 from sklearn.metrics import confusion_matrix
+from pathlib import Path
 import sys
 import numpy as np
 import csv
+import os
 
 PATH = 'dnd/difficulty.csv'
 IRIS = None
@@ -77,6 +79,9 @@ def get_iris_and_classifer():
 
     return result
 
+if Path("dnd/user_file.csv").is_file():
+    PATH = "dnd/user_file.csv"
+
 result = get_iris_and_classifer()
 IRIS = result[0]
 CLF = result[1]
@@ -87,4 +92,8 @@ petal_length = float(sys.argv[3])
 petal_width = float(sys.argv[4])
 case = [sepal_length, sepal_width, petal_length, petal_width]
 result = test(case)
+
+if Path("dnd/user_file.csv").is_file():
+    os.remove('dnd/user_file.csv')
+
 print(result)
