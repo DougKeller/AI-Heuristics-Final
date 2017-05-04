@@ -22,12 +22,12 @@ app.get('/', (request, response) => {
 });
 
 app.post('/estimate', (request, response) => {
-  var pCount = parseInt(request.body.playercount);
-  var pLevel = parseFloat(request.body.playerlevel);
-  var mCount = parseInt(request.body.monstercount);
-  var mLevel = parseFloat(request.body.monsterlevel);
+  var pCount = parseInt(request.body.playerCount);
+  var pLevel = parseFloat(request.body.playerLevel);
+  var mCount = parseInt(request.body.monsterCount);
+  var mLevel = parseFloat(request.body.monsterLevel);
 
-  if (request.files.userfile) {
+  if (request.files && request.files.userfile) {
     var file = request.files.userfile;
     file.mv('dnd/user_file.csv');
   }
@@ -38,24 +38,24 @@ app.post('/estimate', (request, response) => {
   console.log(`Executing command: ${command}`);
   exec(command, (error, stdout, stderr) => {
     if (error) {
-      response.render('error');
+      response.status(422).json(error);
     } else {
-      response.render('result', {
-        text: stdout,
-        playercount: pCount,
-        playerlevel: pLevel,
-        monstercount: mCount,
-        monsterlevel: mLevel
+      response.status(200).json({
+        result: stdout.replace(/\n/, ''),
+        playerCount: pCount,
+        playerLevel: pLevel,
+        monsterCount: mCount,
+        monsterLevel: mLevel
       });
     }
   });
 });
 
 app.post('/case', (request, response) => {
-  var pCount = parseInt(request.body.playercount);
-  var pLevel = parseInt(request.body.playerlevel);
-  var mCount = parseInt(request.body.monstercount);
-  var mLevel = parseInt(request.body.monsterlevel);
+  var pCount = parseInt(request.body.playerCount);
+  var pLevel = parseFloat(request.body.playerLevel);
+  var mCount = parseInt(request.body.monsterCount);
+  var mLevel = parseFloat(request.body.monsterLevel);
   var result = parseInt(request.body.result);
 
   var args = [pCount, pLevel, mCount, mLevel, result].map(v => v.toString()).join(' ');

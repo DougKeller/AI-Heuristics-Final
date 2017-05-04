@@ -24,6 +24,7 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
     var index = $scope.players.length - 1;
     $timeout(() => document.getElementById("player-" + index).focus());
   };
+
   $scope.addMonster = () => {
     $scope.monsters.push({});
     var index = $scope.monsters.length - 1;
@@ -34,6 +35,10 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
   $scope.removeMonster = (index) => { $scope.monsters.splice(index, 1) };
 
   $scope.getEstimate = () => {
-    console.log($scope.params);
+    $http.post('/estimate', $scope.params).then(
+      (response) => {
+        $scope.response = response.data;
+      }
+    );
   };
 }]);
