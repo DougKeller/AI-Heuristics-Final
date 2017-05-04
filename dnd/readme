@@ -1,0 +1,21 @@
+Difficulty mappings:
+Easy = 0
+Medium = 1
+Hard = 2
+Deadly = 3
+
+Difficulty.csv should be in the following format:
+
+
+num_rows,4,Easy,Medium,Hard,Deadly                                <--- First Row
+num_players,player_level,num_monsters,monster_level,Difficulty    <--- All other rows
+
+
+Example:
+
+
+1,4,Easy,Medium,Hard,Deadly
+4,4,1,1,0
+4,4,1,4,1
+2,2,1,4,2
+3,4,4,4,3
