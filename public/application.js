@@ -34,11 +34,14 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
   $scope.removePlayer = (index) => { $scope.players.splice(index, 1) };
   $scope.removeMonster = (index) => { $scope.monsters.splice(index, 1) };
 
+  var error = () => $scope.response = 'error';
+
   $scope.getEstimate = () => {
     $http.post('/estimate', $scope.params).then(
       (response) => {
         $scope.response = response.data;
-      }
+      },
+      error
     );
   };
 
@@ -59,7 +62,8 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
     };
 
     $http.post('/case', params).then(
-      () => $scope.response.correctionMade = true
+      () => $scope.response.correctionMade = true,
+      error
     );
   };
 }]);
