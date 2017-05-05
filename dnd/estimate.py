@@ -7,7 +7,7 @@ import csv
 import os
 
 PATH = 'dnd/difficulty.csv'
-IRIS = None
+TREE = None
 CLF = None
 
 class DecisionTreeData(dict):
@@ -22,7 +22,6 @@ class DecisionTreeData(dict):
             raise AttributeError(key)
 
 def load_data_from_path(path):
-    #change below csv file path
     with open(path) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
@@ -51,11 +50,11 @@ def load_data_from_path(path):
         data=data,
         target=target,
         target_names=target_names,
-        feature_names=['player count', 'player level', 'monster count', 'mounster level']
+        feature_names=['player count', 'player level', 'player std', 'monster count', 'mounster level', 'monster std']
     )
 
 
-def load_iris():
+def load_dnd_tree():
     return load_data_from_path(PATH)
 
 def test_accuracy():
@@ -68,29 +67,31 @@ def test_accuracy():
 
 def test(case):
     prediction = CLF.predict([case])
-    return IRIS.target_names[prediction][0]
+    return TREE.target_names[prediction][0]
 
-def get_iris_and_classifer():
-    iris = load_iris()
+def get_dnd_tree_and_classifer():
+    dnd_tree = load_dnd_tree()
     classifier = tree.DecisionTreeClassifier()
-    classifier = classifier.fit(iris.data, iris.target)
+    classifier = classifier.fit(dnd_tree.data, dnd_tree.target)
 
-    result = [iris, classifier]
+    result = [dnd_tree, classifier]
 
     return result
 
 if Path("dnd/user_file.csv").is_file():
     PATH = "dnd/user_file.csv"
 
-result = get_iris_and_classifer()
-IRIS = result[0]
+result = get_dnd_tree_and_classifer()
+TREE = result[0]
 CLF = result[1]
 
-sepal_length = float(sys.argv[1])
-sepal_width = float(sys.argv[2])
-petal_length = float(sys.argv[3])
-petal_width = float(sys.argv[4])
-case = [sepal_length, sepal_width, petal_length, petal_width]
+player_count = int(sys.argv[1])
+player_level = float(sys.argv[2])
+player_std = float(sys.argv[3])
+monster_count = int(sys.argv[4])
+monster_level = float(sys.argv[5])
+monster_std = float(sys.argv[6])
+case = [player_count, player_level, player_std, monster_count, monster_level, monster_std]
 result = test(case)
 
 if Path("dnd/user_file.csv").is_file():

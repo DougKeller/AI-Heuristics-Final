@@ -21,19 +21,38 @@ app.get('/', (request, response) => {
   response.render('index');
 });
 
+var avg = (arr) => {
+  var sum = 0;
+  arr.forEach(v => sum += v);
+  return sum / arr.length;
+};
+
+var std = (arr) => {
+  var err = 0;
+  var average = avg(arr);
+  arr.forEach(v => err += Math.pow(v - average, 2));
+  err = err / arr.length;
+  return Math.sqrt(err);
+};
+
 app.post('/estimate', (request, response) => {
-  var pCount = parseInt(request.body.playerCount);
-  var pLevel = parseFloat(request.body.playerLevel);
-  var mCount = parseInt(request.body.monsterCount);
-  var mLevel = parseFloat(request.body.monsterLevel);
+  var players = request.body.players;
+  var monsters = request.body.monsters;
+
+  var pCount = players.length;
+  var pLevel = avg(players);
+  var pStd = std(players);
+  var mCount = monsters.length;
+  var mLevel = avg(monsters);
+  var mStd = std(monsters);
+
+  var args = [pCount, pLevel, pStd, mCount, mLevel, mStd].map(v => v.toString()).join(' ');
+  var command = estimateCommand + args;
 
   if (request.files && request.files.userfile) {
     var file = request.files.userfile;
     file.mv('dnd/user_file.csv');
   }
-
-  var args = [pCount, pLevel, mCount, mLevel].map(v => v.toString()).join(' ');
-  var command = estimateCommand + args;
 
   console.log(`Executing command: ${command}`);
   exec(command, (error, stdout, stderr) => {
@@ -42,23 +61,26 @@ app.post('/estimate', (request, response) => {
     } else {
       response.status(200).json({
         result: stdout.replace(/\n/, ''),
-        playerCount: pCount,
-        playerLevel: pLevel,
-        monsterCount: mCount,
-        monsterLevel: mLevel
+        players: players,
+        monsters: monsters
       });
     }
   });
 });
 
 app.post('/case', (request, response) => {
-  var pCount = parseInt(request.body.playerCount);
-  var pLevel = parseFloat(request.body.playerLevel);
-  var mCount = parseInt(request.body.monsterCount);
-  var mLevel = parseFloat(request.body.monsterLevel);
-  var result = parseInt(request.body.result);
+  var players = request.body.players;
+  var monsters = request.body.monsters;
 
-  var args = [pCount, pLevel, mCount, mLevel, result].map(v => v.toString()).join(' ');
+  var pCount = players.length;
+  var pLevel = avg(players);
+  var pStd = std(players);
+  var mCount = monsters.length;
+  var mLevel = avg(monsters);
+  var mStd = std(monsters);
+  var result = request.body.result;
+
+  var args = [pCount, pLevel, pStd, mCount, mLevel, mStd, result].map(v => v.toString()).join(' ');
   var command = addCastCommand + args;
 
   console.log(`Executing command: ${command}`);
