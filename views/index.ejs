@@ -20,17 +20,18 @@
     <div class="row">
       <div class="col col-md-8 col-md-offset-2 well well-md">
         <form name="form" class="form-horizontal" ng-submit="getEstimate()">
-
           <div class="form-group col-md-6">
             <label class="control-label col col-sm-4">Players</label>
             <div class="col col-sm-8">
-              <input type="button" class="btn btn-default" ng-click="addPlayer()" value="Add Player"/>
+              <div class="input-group">
+                <div class="input-group-addon">Count</div>
+                <input step="1" ng-model="params.playerCount" type="number" class="form-control" required />
+              </div>
             </div>
-            <div class="col col-sm-8 col-sm-offset-4" ng-repeat="player in params.players">
+            <div class="col col-sm-8 col-sm-offset-4">
               <div class="input-group">
                 <div class="input-group-addon">Level</div>
-                <input id="player-{{$index}}" step="0.001" ng-model="player.level" ng-change="updatePlayerValues()" type="number" class="form-control" required />
-                <div class="input-group-addon exit" ng-click="removePlayer($index); updatePlayerValues()">&times;</div>
+                <input step="1" ng-model="params.playerLevel" type="number" class="form-control" required />
               </div>
             </div>
           </div>
@@ -43,8 +44,8 @@
             <div class="col col-sm-8 col-sm-offset-4" ng-repeat="monster in params.monsters">
               <div class="input-group">
                 <div class="input-group-addon">Level</div>
-                <input id="monster-{{$index}}" step="0.001" ng-model="monster.level" ng-change="updateMonsterValues()" type="number" class="form-control" required />
-                <div class="input-group-addon exit" ng-click="removeMonster($index); updateMonsterValues()">&times;</div>
+                <input id="monster-{{$index}}" step="0.001" ng-model="monster.level" type="number" class="form-control" required />
+                <div class="input-group-addon exit" ng-click="removeMonster($index)">&times;</div>
               </div>
             </div>
           </div>
@@ -100,7 +101,6 @@
           <div class="col col-md-6">
             <label>Player Count:</label> {{ response.playerCount }}<br />
             <label>Player Level:</label> {{ response.playerLevel }}<br />
-            <label>Player Std. Dev:</label> {{ response.playerStd }}<br />
             <label>Decision Accuracy:</label> {{ accuracy * 100 || 0 }}%<br />
           </div>
           <div class="col col-md-6">

@@ -1,14 +1,7 @@
 var app = angular.module('dnd', []);
 app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http, $timeout) => {
   $scope.params = {
-    players: [],
     monsters: []
-  };
-
-  $scope.addPlayer = () => {
-    $scope.params.players.push({});
-    var index = $scope.params.players.length - 1;
-    $timeout(() => document.getElementById("player-" + index).focus());
   };
 
   $scope.addMonster = () => {
@@ -17,7 +10,6 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
     $timeout(() => document.getElementById("monster-" + index).focus());
   };
 
-  $scope.removePlayer = (index) => { $scope.params.players.splice(index, 1) };
   $scope.removeMonster = (index) => { $scope.params.monsters.splice(index, 1) };
 
   var error = () => $scope.response = 'error';
@@ -32,7 +24,8 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
 
   $scope.getEstimate = () => {
     var params = {
-      players: $scope.params.players.map(v => v.level),
+      playerLevel: $scope.params.playerLevel,
+      playerCount: $scope.params.playerCount,
       monsters: $scope.params.monsters.map(v => v.level)
     }
     $http.post('/estimate', params).then(
@@ -53,8 +46,9 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
     };
 
     var params = {
-      players: $scope.response.players,
       monsters: $scope.response.monsters,
+      playerCount: $scope.response.playerCount,
+      playerLevel: $scope.response.playerLevel,
       result: correctCodes[correctValue.toLowerCase()]
     };
 

@@ -36,17 +36,15 @@ var std = (arr) => {
 };
 
 app.post('/estimate', (request, response) => {
-  var players = request.body.players;
-  var monsters = request.body.monsters;
+  var pCount = request.body.playerCount;
+  var pLevel = request.body.playerLevel;
 
-  var pCount = players.length;
-  var pLevel = avg(players);
-  var pStd = std(players);
+  var monsters = request.body.monsters;
   var mCount = monsters.length;
   var mLevel = avg(monsters);
   var mStd = std(monsters);
 
-  var args = [pCount, pLevel, pStd, mCount, mLevel, mStd].map(v => v.toString()).join(' ');
+  var args = [pCount, pLevel, mCount, mLevel, mStd].map(v => v.toString()).join(' ');
   var command = estimateCommand + args;
 
   if (request.files && request.files.userfile) {
@@ -61,11 +59,9 @@ app.post('/estimate', (request, response) => {
     } else {
       response.status(200).json({
         result: stdout.replace(/\n/, ''),
-        players: players,
-        monsters: monsters,
         playerCount: pCount,
         playerLevel: pLevel,
-        playerStd: pStd,
+        monsters: monsters,
         monsterCount: mCount,
         monsterLevel: mLevel,
         monsterStd: mStd
@@ -75,18 +71,16 @@ app.post('/estimate', (request, response) => {
 });
 
 app.post('/case', (request, response) => {
-  var players = request.body.players;
-  var monsters = request.body.monsters;
+  var pCount = request.body.playerCount;
+  var pLevel = request.body.playerLevel;
 
-  var pCount = players.length;
-  var pLevel = avg(players);
-  var pStd = std(players);
+  var monsters = request.body.monsters;
   var mCount = monsters.length;
   var mLevel = avg(monsters);
   var mStd = std(monsters);
   var result = request.body.result;
 
-  var args = [pCount, pLevel, pStd, mCount, mLevel, mStd, result].map(v => v.toString()).join(' ');
+  var args = [pCount, pLevel, mCount, mLevel, mStd, result].map(v => v.toString()).join(' ');
   var command = addCastCommand + args;
 
   console.log(`Executing command: ${command}`);

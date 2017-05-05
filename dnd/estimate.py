@@ -68,7 +68,7 @@ def load_data_from_path(path):
         data=data,
         target=target,
         target_names=target_names,
-        feature_names=['player count', 'player level', 'player std', 'monster count', 'mounster level', 'monster std']
+        feature_names=['player count', 'player level', 'monster count', 'mounster level', 'monster std']
     )
 
 
@@ -133,11 +133,10 @@ else:
 
     player_count = int(sys.argv[1])
     player_level = float(sys.argv[2])
-    player_std = float(sys.argv[3])
-    monster_count = int(sys.argv[4])
-    monster_level = float(sys.argv[5])
-    monster_std = float(sys.argv[6])
-    case = [player_count, player_level, player_std, monster_count, monster_level, monster_std]
+    monster_count = int(sys.argv[3])
+    monster_level = float(sys.argv[4])
+    monster_std = float(sys.argv[5])
+    case = [player_count, player_level, monster_count, monster_level, monster_std]
     result = test(case)
 
     if Path("dnd/user_file.csv").is_file():

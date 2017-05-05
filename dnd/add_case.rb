@@ -5,11 +5,10 @@ class Array
     [
       self[0].to_i,
       self[1].to_f.round(2),
-      self[2].to_f.round(2),
-      self[3].to_i,
+      self[2].to_i,
+      self[3].to_f.round(2),
       self[4].to_f.round(2),
-      self[5].to_f.round(2),
-      self[6].to_i
+      self[5].to_i
     ].join(',')
   end
 end
@@ -29,7 +28,7 @@ def add_item(argv)
   data = data.sort.sort! { |a, b| custom_cmp(a, b) }
 
   File.open('dnd/difficulty.csv', 'w') do |file|
-    header = "#{data.length},6,Easy,Medium,Hard,Deadly\n"
+    header = "#{data.length},5,Easy,Medium,Hard,Deadly\n"
     file.write(header)
     content = data.join("\n")
     file.write(content)
