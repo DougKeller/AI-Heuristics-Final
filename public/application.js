@@ -41,4 +41,9 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
       }
     );
   };
+
+  $scope.makeCorrection = (correctValue) => {
+    $scope.response.result = correctValue;
+    $http.post('/case', $scope.response);
+  };
 }]);
