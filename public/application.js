@@ -43,7 +43,23 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
   };
 
   $scope.makeCorrection = (correctValue) => {
-    $scope.response.result = correctValue;
-    $http.post('/case', $scope.response);
+    var correctCodes = {
+      easy: 0,
+      medium: 1,
+      hard: 2,
+      deadly: 3
+    };
+
+    var params = {
+      playerCount: $scope.response.playerCount,
+      playerLevel: $scope.response.playerLevel,
+      monsterCount: $scope.response.monsterCount,
+      monsterLevel: $scope.response.monsterLevel,
+      result: correctCodes[correctValue.toLowerCase()]
+    };
+
+    $http.post('/case', params).then(
+      () => $scope.response.correctionMade = true
+    );
   };
 }]);

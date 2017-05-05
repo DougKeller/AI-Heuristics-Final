@@ -61,6 +61,7 @@ app.post('/case', (request, response) => {
   var args = [pCount, pLevel, mCount, mLevel, result].map(v => v.toString()).join(' ');
   var command = addCastCommand + args;
 
+  console.log(`Executing command: ${command}`);
   exec(command, () => {
     response.send();
   });
