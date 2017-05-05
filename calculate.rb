@@ -131,8 +131,8 @@ end
 
 require_relative 'dnd/add_case.rb'
 
-(1..20).each do |level|
-  players = Array.new(4, level)
+(2..19).each do |level|
+  players = Array.new(4) { level + rand(0..2) - 1 }
   monsters = Array.new(1, level)
 
   pavg = players.inject(:+) / players.length.to_f
