@@ -13,7 +13,7 @@ class Array
 end
 
 data = CSV.read('dnd/difficulty.csv') || []
-data = data.drop(1).map(&:from_csv)
+data = data.drop(1).map(&:from_csv).uniq
 
 new_row = ARGV.from_csv
 data << new_row unless data.include? new_row
