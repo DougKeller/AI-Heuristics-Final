@@ -62,7 +62,13 @@ app.post('/estimate', (request, response) => {
       response.status(200).json({
         result: stdout.replace(/\n/, ''),
         players: players,
-        monsters: monsters
+        monsters: monsters,
+        playerCount: pCount,
+        playerLevel: pLevel,
+        playerStd: pStd,
+        monsterCount: mCount,
+        monsterLevel: mLevel,
+        monsterStd: mStd
       });
     }
   });
@@ -86,6 +92,21 @@ app.post('/case', (request, response) => {
   console.log(`Executing command: ${command}`);
   exec(command, () => {
     response.send();
+  });
+});
+
+app.use('/accuracy', (request, response) => {
+  var args = 'test';
+  var command = estimateCommand + args;
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      response.status(422).json(error);
+    } else {
+      response.status(200).json({
+        accuracy: parseFloat(stdout)
+      });
+    }
   });
 });
 

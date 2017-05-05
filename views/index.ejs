@@ -72,8 +72,11 @@
           <div class="col col-md-6">
             <label>Player Count:</label> {{ response.playerCount }}<br />
             <label>Player Level:</label> {{ response.playerLevel }}<br />
+            <label>Player Std. Dev:</label> {{ response.playerStd }}<br />
             <label>Monster Count:</label> {{ response.monsterCount }}<br />
             <label>Monster Level:</label> {{ response.monsterLevel }}<br />
+            <label>Monster Std. Dev:</label> {{ response.monsterStd }}<br />
+            <label>Decision Accuracy:</label> {{ accuracy * 100 || 0 }}%<br />
           </div>
           <div class="col col-md-6">
             <h3 style="margin-top: 0px;">Difficulty: <span ng-class="response.result.toLowerCase()">{{ response.result }}</h3>

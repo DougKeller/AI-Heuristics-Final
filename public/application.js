@@ -22,6 +22,14 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
 
   var error = () => $scope.response = 'error';
 
+  $scope.getAccuracy = () => {
+    $http.get('/accuracy').then(
+      (response) => {
+        $scope.accuracy = response.data.accuracy;
+      }
+    )
+  };
+
   $scope.getEstimate = () => {
     var params = {
       players: $scope.params.players.map(v => v.level),
@@ -30,6 +38,7 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
     $http.post('/estimate', params).then(
       (response) => {
         $scope.response = response.data;
+        $scope.getAccuracy();
       },
       error
     );

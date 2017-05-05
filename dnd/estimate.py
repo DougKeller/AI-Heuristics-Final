@@ -5,6 +5,7 @@ import sys
 import numpy as np
 import csv
 import os
+import math
 
 PATH = 'dnd/difficulty.csv'
 TREE = None
@@ -20,6 +21,23 @@ class DecisionTreeData(dict):
             return self[key]
         except KeyError:
             raise AttributeError(key)
+
+    def partition(self, num, fold_index):
+        fold_size = self.data.shape[0] / 10
+        start = num * fold_size
+        end = start + fold_size
+
+        if end >= self.data.size:
+            end = self.data.size
+
+        tree_data = np.concatenate([self.data[0:start], self.data[end:-1]])
+        tree_target = np.concatenate([self.target[0:start], self.target[end:-1]])
+
+        test_data = self.data[start:end]
+        test_target = self.target[start:end]
+
+        return [tree_data, tree_target, test_data, test_target]
+
 
 def load_data_from_path(path):
     with open(path) as csv_file:
@@ -57,14 +75,6 @@ def load_data_from_path(path):
 def load_dnd_tree():
     return load_data_from_path(PATH)
 
-def test_accuracy():
-    test_path = raw_input("Enter the path of the test file: ")
-    test_data = load_data_from_path(test_path)
-
-    results = CLF.predict(test_data.data)
-    print "Confusion Matrix: \n"
-    print confusion_matrix(test_data.target, results)
-
 def test(case):
     prediction = CLF.predict([case])
     return TREE.target_names[prediction][0]
@@ -81,20 +91,56 @@ def get_dnd_tree_and_classifer():
 if Path("dnd/user_file.csv").is_file():
     PATH = "dnd/user_file.csv"
 
-result = get_dnd_tree_and_classifer()
-TREE = result[0]
-CLF = result[1]
+if sys.argv[1] == 'test':
+    arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    dnd_tree = load_dnd_tree()
 
-player_count = int(sys.argv[1])
-player_level = float(sys.argv[2])
-player_std = float(sys.argv[3])
-monster_count = int(sys.argv[4])
-monster_level = float(sys.argv[5])
-monster_std = float(sys.argv[6])
-case = [player_count, player_level, player_std, monster_count, monster_level, monster_std]
-result = test(case)
+    ratios = []
 
-if Path("dnd/user_file.csv").is_file():
-    os.remove('dnd/user_file.csv')
+    for i in arr:
+        res = dnd_tree.partition(i, 10)
+        tree_data = res[0]
+        tree_target = res[1]
+        test_data = res[2]
+        test_target = res[3]
 
-print(result)
+        if tree_target.size == 0 or test_target.size == 0:
+            break
+
+        classifier = tree.DecisionTreeClassifier()
+        classifier = classifier.fit(tree_data, tree_target)
+        results = classifier.predict(test_data)
+        matrix = confusion_matrix(test_target, results)
+
+        num_correct = 0
+        total = 0
+
+        for i, row in enumerate(matrix):
+            for j, cell in enumerate(row):
+                if i == j:
+                    num_correct += cell
+
+                total += cell
+
+        ratios.append(num_correct / float(total))
+
+    print sum(ratios) / len(ratios)
+
+else:
+    result = get_dnd_tree_and_classifer()
+    TREE = result[0]
+    CLF = result[1]
+
+    player_count = int(sys.argv[1])
+    player_level = float(sys.argv[2])
+    player_std = float(sys.argv[3])
+    monster_count = int(sys.argv[4])
+    monster_level = float(sys.argv[5])
+    monster_std = float(sys.argv[6])
+    case = [player_count, player_level, player_std, monster_count, monster_level, monster_std]
+    result = test(case)
+
+    if Path("dnd/user_file.csv").is_file():
+        os.remove('dnd/user_file.csv')
+
+    print(result)
