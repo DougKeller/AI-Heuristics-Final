@@ -12,12 +12,17 @@ class Array
   end
 end
 
+def custom_cmp(a, b)
+  return a <=> b if a[-1] == b[-1]
+  a[-1] <=> b[-1]
+end
+
 data = CSV.read('dnd/difficulty.csv') || []
 data = data.drop(1).map(&:from_csv).uniq
 
 new_row = ARGV.from_csv
 data << new_row unless data.include? new_row
-data = data.sort.sort! { |a, b| a[-1] <=> b[-1] }
+data = data.sort.sort! { |a, b| custom_cmp(a, b) }
 
 File.open('dnd/difficulty.csv', 'w') do |file|
   header = "#{data.length},4,Easy,Medium,Hard,Deadly\n"

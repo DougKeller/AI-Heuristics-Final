@@ -76,15 +76,23 @@
             <label>Monster Level:</label> {{ response.monsterLevel }}<br />
           </div>
           <div class="col col-md-6">
-            <h3 style="margin-top: 0px;">Difficulty: <span ng-class="response.result.toLowerCase()">{{ response.result }} <a class="easy" ng-if="!response.correctionMade" ng-click="makeCorrection(response.result)">&#10003;</a></h3>
+            <h3 style="margin-top: 0px;">Difficulty: <span ng-class="response.result.toLowerCase()">{{ response.result }}</h3>
             <h4 ng-if="response.correctionMade" class="easy">Saved &#10003;</h4>
             <form ng-if="!response.correctionMade">
               <label>Make Correction:</label>
               <div class="btn-group">
-                <button class="btn btn-default easy" ng-click="makeCorrection('Easy')">Easy</button>
-                <button class="btn btn-default medium" ng-click="makeCorrection('Medium')">Medium</button>
-                <button class="btn btn-default hard" ng-click="makeCorrection('Hard')">Hard</button>
-                <button class="btn btn-default deadly" ng-click="makeCorrection('Deadly')">Deadly</button>
+                <button class="btn btn-default easy" ng-click="makeCorrection('Easy')" ng-class="{ easy: response.result !== 'Easy' }">
+                  {{ response.result == 'Easy' ? '✓' : 'Easy' }}
+                </button>
+                <button class="btn btn-default easy" ng-click="makeCorrection('Medium')" ng-class="{ medium: response.result !== 'Medium' }">
+                  {{ response.result == 'Medium' ? '✓' : 'Medium' }}
+                </button>
+                <button class="btn btn-default easy" ng-click="makeCorrection('Hard')" ng-class="{ hard: response.result !== 'Hard' }">
+                  {{ response.result == 'Hard' ? '✓' : 'Hard' }}
+                </button>
+                <button class="btn btn-default easy" ng-click="makeCorrection('Deadly')" ng-class="{ deadly: response.result !== 'Deadly' }">
+                  {{ response.result == 'Deadly' ? '✓' : 'Deadly' }}
+                </button>
               </div>
             </form>
           </div>
