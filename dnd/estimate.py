@@ -6,6 +6,7 @@ import numpy as np
 import csv
 import os
 import math
+import random
 
 PATH = 'dnd/difficulty.csv'
 TREE = None
@@ -62,6 +63,11 @@ def load_data_from_path(path):
         for i, ir in enumerate(data_file):
             data[i] = np.asarray(ir[:-1], dtype=np.float64)
             target[i] = np.asarray(ir[-1], dtype=np.int)
+
+        #randomize the data
+        grouped_rows = zip(data, target)
+        random.shuffle(grouped_rows)
+        data, target = zip(*grouped_rows)
 
 
     return DecisionTreeData(
