@@ -90,47 +90,46 @@ def test(case):
 #     PATH = "dnd/user_file.csv"
 
 if sys.argv[1] == 'build':
-    tree_of_best_fit = None
     overall_accuracy = []
-    best_accuracy = 0
 
-    for _ in range(100):
-        arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        dnd_tree = load_dnd_tree()
+    arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    dnd_tree = load_dnd_tree()
 
-        for i in arr:
-            res = dnd_tree.partition(i, 10)
-            tree_data = res[0]
-            tree_target = res[1]
-            test_data = res[2]
-            test_target = res[3]
+    for i in arr:
+        res = dnd_tree.partition(i, 10)
+        tree_data = res[0]
+        tree_target = res[1]
+        test_data = res[2]
+        test_target = res[3]
 
-            if len(tree_target) == 0 or len(test_target) == 0:
-                break
+        if len(tree_target) == 0 or len(test_target) == 0:
+            break
 
-            classifier = tree.DecisionTreeClassifier()
-            classifier = classifier.fit(tree_data, tree_target)
-            results = classifier.predict(test_data)
-            matrix = confusion_matrix(test_target, results)
+        classifier = tree.DecisionTreeClassifier()
+        classifier = classifier.fit(tree_data, tree_target)
+        results = classifier.predict(test_data)
+        matrix = confusion_matrix(test_target, results)
 
-            num_correct = 0
-            total = 0
+        num_correct = 0
+        total = 0
 
-            for i, row in enumerate(matrix):
-                for j, cell in enumerate(row):
-                    if i == j:
-                        num_correct += cell
+        for i, row in enumerate(matrix):
+            for j, cell in enumerate(row):
+                if i == j:
+                    num_correct += cell
 
-                    total += cell
+                total += cell
 
-            accuracy = num_correct / float(total)
-            overall_accuracy.append(accuracy)
-            if accuracy > best_accuracy:
-                best_accuracy = accuracy
-                tree_of_best_fit = [dnd_tree, classifier]
+        accuracy = num_correct / float(total)
+        overall_accuracy.append(accuracy)
 
     with open('dnd/best_fit.pkl', 'wb') as file:
-        cPickle.dump(tree_of_best_fit, file)
+        # Generate the full tree and save it
+        classifier = tree.DecisionTreeClassifier()
+        classifier = classifer.fit(dnd_tree.data, dnd_tree.target)
+
+        decision_tree = [dnd_tree, classifier]
+        cPickle.dump(decision_tree, file)
     with open('dnd/accuracy.txt', 'w') as file:
         accuracy = sum(overall_accuracy) / len(overall_accuracy)
         file.write(str(accuracy))
