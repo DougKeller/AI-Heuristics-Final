@@ -74,7 +74,7 @@
         <form ng-if="!response.correctionMade">
           <label>Make Correction:</label>
           <div class="btn-group">
-            <button class="btn btn-default easy" ng-click="makeCorrection('Easy')" ng-class="{ easy: response.result !== 'Easy' }">
+            <button class="btn btn-default easy" ng-click="makeCorrection('Easy')">
               {{ response.result == 'Easy' ? '✓' : 'Easy' }}
             </button>
             <button class="btn btn-default easy" ng-click="makeCorrection('Medium')" ng-class="{ medium: response.result !== 'Medium' }">

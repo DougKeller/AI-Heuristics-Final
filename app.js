@@ -55,6 +55,7 @@ app.post('/estimate', (request, response) => {
   console.log(`Executing command: ${command}`);
   exec(command, (error, stdout, stderr) => {
     if (error) {
+      console.log(error);
       response.status(422).json(error);
     } else {
       response.status(200).json({
@@ -90,11 +91,12 @@ app.post('/case', (request, response) => {
 });
 
 app.use('/accuracy', (request, response) => {
-  var args = 'test';
+  var args = 'accuracy';
   var command = estimateCommand + args;
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
+      console.log(error);
       response.status(422).json(error);
     } else {
       response.status(200).json({
