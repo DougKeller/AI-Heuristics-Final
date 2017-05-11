@@ -158,7 +158,7 @@ else:
         count_ratio = float(sys.argv[2])
         monster_std = float(sys.argv[3])
 
-        case = [count_ratio, level_ratio, monster_std]
+        case = [level_ratio, count_ratio, monster_std]
         result = test(case)
 
         print(result)
