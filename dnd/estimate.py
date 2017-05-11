@@ -24,15 +24,15 @@ class DecisionTreeData(dict):
             raise AttributeError(key)
 
     def partition(self, num, fold_index):
-        fold_size = self.data.shape[0] / 10
+        fold_size = len(self.data) / 10
         start = num * fold_size
         end = start + fold_size
 
-        if end >= self.data.size:
-            end = self.data.size
+        if end >= len(self.data):
+            end = len(self.data)
 
-        tree_data = np.concatenate([self.data[0:start], self.data[end:-1]])
-        tree_target = np.concatenate([self.target[0:start], self.target[end:-1]])
+        tree_data = self.data[0:start] + self.data[end:-1]
+        tree_target = self.target[0:start] + self.target[end:-1]
 
         test_data = self.data[start:end]
         test_target = self.target[start:end]
@@ -110,7 +110,7 @@ if sys.argv[1] == 'test':
         test_data = res[2]
         test_target = res[3]
 
-        if tree_target.size == 0 or test_target.size == 0:
+        if len(tree_target) == 0 or len(test_target) == 0:
             break
 
         classifier = tree.DecisionTreeClassifier()

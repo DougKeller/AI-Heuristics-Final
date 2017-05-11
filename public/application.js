@@ -17,7 +17,7 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
   $scope.getAccuracy = () => {
     $http.get('/accuracy').then(
       (response) => {
-        $scope.accuracy = response.data.accuracy;
+        $scope.accuracy = response.data.accuracy.toFixed(2);
       }
     )
   };
