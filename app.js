@@ -91,7 +91,7 @@ app.post('/case', (request, response) => {
 });
 
 app.use('/accuracy', (request, response) => {
-  var args = 'test';
+  var args = 'accuracy';
   var command = estimateCommand + args;
 
   exec(command, (error, stdout, stderr) => {

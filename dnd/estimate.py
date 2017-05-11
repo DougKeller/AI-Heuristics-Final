@@ -7,6 +7,7 @@ import csv
 import os
 import math
 import random
+import cPickle
 
 PATH = 'dnd/difficulty.csv'
 TREE = None
@@ -85,67 +86,67 @@ def test(case):
     prediction = CLF.predict([case])
     return TREE.target_names[prediction][0]
 
-def get_dnd_tree_and_classifer():
-    dnd_tree = load_dnd_tree()
-    classifier = tree.DecisionTreeClassifier()
-    classifier = classifier.fit(dnd_tree.data, dnd_tree.target)
+# if Path("dnd/user_file.csv").is_file():
+#     PATH = "dnd/user_file.csv"
 
-    result = [dnd_tree, classifier]
+if sys.argv[1] == 'build':
+    tree_of_best_fit = None
+    best_accuracy = 0
 
-    return result
+    for _ in range(100):
+        arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        dnd_tree = load_dnd_tree()
 
-if Path("dnd/user_file.csv").is_file():
-    PATH = "dnd/user_file.csv"
+        for i in arr:
+            res = dnd_tree.partition(i, 10)
+            tree_data = res[0]
+            tree_target = res[1]
+            test_data = res[2]
+            test_target = res[3]
 
-if sys.argv[1] == 'test':
-    arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    dnd_tree = load_dnd_tree()
+            if len(tree_target) == 0 or len(test_target) == 0:
+                break
 
-    ratios = []
+            classifier = tree.DecisionTreeClassifier()
+            classifier = classifier.fit(tree_data, tree_target)
+            results = classifier.predict(test_data)
+            matrix = confusion_matrix(test_target, results)
 
-    for i in arr:
-        res = dnd_tree.partition(i, 10)
-        tree_data = res[0]
-        tree_target = res[1]
-        test_data = res[2]
-        test_target = res[3]
+            num_correct = 0
+            total = 0
 
-        if len(tree_target) == 0 or len(test_target) == 0:
-            break
+            for i, row in enumerate(matrix):
+                for j, cell in enumerate(row):
+                    if i == j:
+                        num_correct += cell
 
-        classifier = tree.DecisionTreeClassifier()
-        classifier = classifier.fit(tree_data, tree_target)
-        results = classifier.predict(test_data)
-        matrix = confusion_matrix(test_target, results)
+                    total += cell
 
-        num_correct = 0
-        total = 0
+            accuracy = num_correct / float(total)
+            if accuracy > best_accuracy:
+                best_accuracy = accuracy
+                tree_of_best_fit = [dnd_tree, classifier]
 
-        for i, row in enumerate(matrix):
-            for j, cell in enumerate(row):
-                if i == j:
-                    num_correct += cell
+    with open('best_fit.pkl', 'wb') as file:
+        cPickle.dump(tree_of_best_fit, file)
+    with open('accuracy.txt', 'w') as file:
+        file.write(str(best_accuracy))
 
-                total += cell
-
-        ratios.append(num_correct / float(total))
-
-    print sum(ratios) / len(ratios)
-
+elif sys.argv[1] == 'accuracy':
+    with open('accuracy.txt', 'rb') as file:
+        print file.read()
 else:
-    result = get_dnd_tree_and_classifer()
-    TREE = result[0]
-    CLF = result[1]
+    with open('best_fit.pkl', 'rb') as file:
+        result = cPickle.load(file)
+        TREE = result[0]
+        CLF = result[1]
 
-    player_count = int(sys.argv[1])
-    player_level = float(sys.argv[2])
-    monster_count = int(sys.argv[3])
-    monster_level = float(sys.argv[4])
-    monster_std = float(sys.argv[5])
-    case = [player_count, player_level, monster_count, monster_level, monster_std]
-    result = test(case)
+        player_count = int(sys.argv[1])
+        player_level = float(sys.argv[2])
+        monster_count = int(sys.argv[3])
+        monster_level = float(sys.argv[4])
+        monster_std = float(sys.argv[5])
+        case = [player_count, player_level, monster_count, monster_level, monster_std]
+        result = test(case)
 
-    if Path("dnd/user_file.csv").is_file():
-        os.remove('dnd/user_file.csv')
-
-    print(result)
+        print(result)

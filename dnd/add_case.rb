@@ -35,4 +35,14 @@ def add_item(argv)
   end
 end
 
-add_item(ARGV) if ARGV.length > 0
+def build_tree
+  system('python dnd/estimate.py build')
+end
+
+if ARGV.length > 0
+  if ARGV[0] == 'build'
+    build_tree
+  else
+    add_item(ARGV) if ARGV.length > 0
+  end
+end
