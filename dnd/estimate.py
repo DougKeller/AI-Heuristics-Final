@@ -127,16 +127,16 @@ if sys.argv[1] == 'build':
                 best_accuracy = accuracy
                 tree_of_best_fit = [dnd_tree, classifier]
 
-    with open('best_fit.pkl', 'wb') as file:
+    with open('dnd/best_fit.pkl', 'wb') as file:
         cPickle.dump(tree_of_best_fit, file)
-    with open('accuracy.txt', 'w') as file:
+    with open('dnd/accuracy.txt', 'w') as file:
         file.write(str(best_accuracy))
 
 elif sys.argv[1] == 'accuracy':
-    with open('accuracy.txt', 'rb') as file:
+    with open('dnd/accuracy.txt', 'rb') as file:
         print file.read()
 else:
-    with open('best_fit.pkl', 'rb') as file:
+    with open('dnd/best_fit.pkl', 'rb') as file:
         result = cPickle.load(file)
         TREE = result[0]
         CLF = result[1]

@@ -53,7 +53,10 @@ app.controller('MainController', ['$scope', '$http', '$timeout', ($scope, $http,
     };
 
     $http.post('/case', params).then(
-      () => $scope.response.correctionMade = true,
+      () => {
+        $scope.response.correctionMade = true;
+        $scope.response.result = correctValue;
+      },
       error
     );
   };
