@@ -75,7 +75,7 @@ def load_data_from_path(path):
         data=data,
         target=target,
         target_names=target_names,
-        feature_names=['player count', 'player level', 'monster count', 'mounster level', 'monster std']
+        feature_names=['level ratio', 'count ratio', 'monster std']
     )
 
 
@@ -154,12 +154,11 @@ else:
         TREE = result[0]
         CLF = result[1]
 
-        player_count = int(sys.argv[1])
-        player_level = float(sys.argv[2])
-        monster_count = int(sys.argv[3])
-        monster_level = float(sys.argv[4])
-        monster_std = float(sys.argv[5])
-        case = [player_count, player_level, monster_count, monster_level, monster_std]
+        level_ratio = float(sys.argv[1])
+        count_ratio = float(sys.argv[2])
+        monster_std = float(sys.argv[3])
+
+        case = [count_ratio, level_ratio, monster_std]
         result = test(case)
 
         print(result)

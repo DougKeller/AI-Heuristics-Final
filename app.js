@@ -44,7 +44,10 @@ app.post('/estimate', (request, response) => {
   var mLevel = avg(monsters);
   var mStd = std(monsters);
 
-  var args = [pCount, pLevel, mCount, mLevel, mStd].map(v => v.toString()).join(' ');
+  var level_ratio = mLevel / pLevel;
+  var count_ratio = mCount * 1.0 / pCount;
+
+  var args = [level_ratio, count_ratio, mStd].map(v => v.toString()).join(' ');
   var command = estimateCommand + args;
 
   if (request.files && request.files.userfile) {
@@ -81,7 +84,10 @@ app.post('/case', (request, response) => {
   var mStd = std(monsters);
   var result = request.body.result;
 
-  var args = [pCount, pLevel, mCount, mLevel, mStd, result].map(v => v.toString()).join(' ');
+  var level_ratio = mLevel / pLevel;
+  var count_ratio = mCount * 1.0 / pCount;
+
+  var args = [level_ratio, count_ratio, mStd, result].map(v => v.toString()).join(' ');
   var command = addCastCommand + args;
 
   console.log(`Executing command: ${command}`);
