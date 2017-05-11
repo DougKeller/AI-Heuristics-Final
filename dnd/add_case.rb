@@ -3,8 +3,8 @@ require 'csv'
 class Array
   def from_csv
     [
-      self[0].to_f,
-      self[1].to_f,
+      self[0].to_f.round(2),
+      self[1].to_f.round(2),
       self[2].to_f.round(2),
       self[3].to_i
     ].join(',')
