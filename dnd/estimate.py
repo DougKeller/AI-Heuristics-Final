@@ -91,6 +91,7 @@ def test(case):
 
 if sys.argv[1] == 'build':
     tree_of_best_fit = None
+    overall_accuracy = []
     best_accuracy = 0
 
     for _ in range(100):
@@ -123,6 +124,7 @@ if sys.argv[1] == 'build':
                     total += cell
 
             accuracy = num_correct / float(total)
+            overall_accuracy.append(accuracy)
             if accuracy > best_accuracy:
                 best_accuracy = accuracy
                 tree_of_best_fit = [dnd_tree, classifier]
@@ -130,7 +132,8 @@ if sys.argv[1] == 'build':
     with open('dnd/best_fit.pkl', 'wb') as file:
         cPickle.dump(tree_of_best_fit, file)
     with open('dnd/accuracy.txt', 'w') as file:
-        file.write(str(best_accuracy))
+        accuracy = sum(overall_accuracy) / len(overall_accuracy)
+        file.write(str(accuracy))
 
 elif sys.argv[1] == 'accuracy':
     with open('dnd/accuracy.txt', 'rb') as file:
