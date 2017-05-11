@@ -123,10 +123,10 @@ if sys.argv[1] == 'build':
         accuracy = num_correct / float(total)
         overall_accuracy.append(accuracy)
 
-    with open('dnd/best_fit.pkl', 'wb') as file:
+    with open('dnd/decision_tree.pkl', 'wb') as file:
         # Generate the full tree and save it
         classifier = tree.DecisionTreeClassifier()
-        classifier = classifer.fit(dnd_tree.data, dnd_tree.target)
+        classifier = classifier.fit(dnd_tree.data, dnd_tree.target)
 
         decision_tree = [dnd_tree, classifier]
         cPickle.dump(decision_tree, file)
@@ -138,7 +138,7 @@ elif sys.argv[1] == 'accuracy':
     with open('dnd/accuracy.txt', 'rb') as file:
         print file.read()
 else:
-    with open('dnd/best_fit.pkl', 'rb') as file:
+    with open('dnd/decision_tree.pkl', 'rb') as file:
         result = cPickle.load(file)
         TREE = result[0]
         CLF = result[1]
